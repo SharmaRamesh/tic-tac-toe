@@ -5,7 +5,9 @@ import './index.css';
     function Square(props) {
         return (
         <button 
-        className="square" onClick= {() => props.onClick()}>
+        className="square" 
+        style={props.hilite === true ? {color:'green'}: {}}
+        onClick= {() => props.onClick()}>
             {props.value}
         </button>
         );
@@ -13,29 +15,41 @@ import './index.css';
   
   class Board extends React.Component {
         
-    renderSquare(i) {
+    renderSquare(i,winner) {
+      if(winner && (winner[0] === i || winner[1] === i || winner[2] === i))
+      {
         return <Square 
             value={this.props.squares[i]}
+            hilite={true}
             onClick={() => this.props.onClick(i)} />;
+      } else {
+        return <Square 
+            value={this.props.squares[i]}
+            hilite={false}
+            onClick={() => this.props.onClick(i)} />;
+
+      }
     }
   
-    render() {      
+    render() { 
+      const winner = calculateWinner(this.props.squares);
+
       return (
         <div>
           <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
+            {this.renderSquare(0, winner)}
+            {this.renderSquare(1, winner)}
+            {this.renderSquare(2, winner)}
           </div>
           <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
+            {this.renderSquare(3, winner)}
+            {this.renderSquare(4, winner)}
+            {this.renderSquare(5, winner)}
           </div>
           <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
+            {this.renderSquare(6, winner)}
+            {this.renderSquare(7, winner)}
+            {this.renderSquare(8, winner)}
           </div>
         </div>
       );
@@ -99,7 +113,7 @@ import './index.css';
 
         let status;
         if(winner) {
-            status = 'Winner: ' + winner;
+            status = 'Winner: ' + current.squares[winner[0]];
         } else {
             status = 'Next Player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
@@ -139,7 +153,8 @@ import './index.css';
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+        //return squares[a];
+        return lines[i];
       }
     }
     return null;
