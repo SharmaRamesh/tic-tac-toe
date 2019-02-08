@@ -114,8 +114,12 @@ import './index.css';
         let status;
         if(winner) {
             status = 'Winner: ' + current.squares[winner[0]];
-        } else {
+        } else { 
+          if(this.state.stepNumber === 9) {
+            status = 'The game is a draw, click on \'Go to game start\' button to start a new game'
+          } else {
             status = 'Next Player: ' + (this.state.xIsNext ? 'X' : 'O');
+          }
         }
       return (
         <div className="game">
