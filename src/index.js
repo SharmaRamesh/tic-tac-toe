@@ -6,7 +6,7 @@ import './index.css';
         return (
         <button 
         className="square" 
-        style={props.hilite === true ? {color:'green'}: {}}
+        style={props.hilite === true ? {color:'green', borderWidth: 'thick', borderColor: 'green'}: {}}
         onClick= {() => props.onClick()}>
             {props.value}
         </button>
